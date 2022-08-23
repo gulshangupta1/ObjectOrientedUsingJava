@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 public class Cart {
     private double totalCartBalance;
-//    private List<Item> items = new ArrayList<>();
-
     private Map<String, Integer> items = new HashMap<>();
 
     private int milkCount;
@@ -32,20 +30,29 @@ public class Cart {
 
     public void printCart(Cart cart) {
         if (cart.items.size() == 0) {
+            System.out.println();
+            System.out.println("Cart Data:");
+            System.out.println("*********************************************");
             System.out.println("Cart is empty");
+            System.out.println("---------------------------");
+            System.out.println();
             return;
         }
         System.out.println();
         System.out.println("Cart Data:");
         System.out.println("*********************************************");
-        items.forEach((k, v) -> System.out.println("Item name: "+ k +"\tQuantity: "+ v));
+        cart.items.forEach((k, v) -> System.out.println("Item name: "+ k +"\tQuantity: "+ v));
         System.out.println("---------------------------");
         System.out.println("Total cart balance: "+ getTotalCartBalance());
         System.out.println();
     }
 
     public void addToCart(Item item, int quantity) {
-        items.put(item.getItemName(), quantity);
+        if (items.containsKey(item.getItemName())) {
+            this.items.put(item.getItemName(), items.get(item.getItemName()) + quantity);
+        }
+        else
+            this.items.put(item.getItemName(), quantity);
         this.totalCartBalance = this.totalCartBalance + (item.getPrice() * quantity);
         System.out.println(item +" with quantity "+ quantity +" added to cart");
         if (item.getItemName().equalsIgnoreCase("Milk") && milkOfferFlag != true)
@@ -65,24 +72,22 @@ public class Cart {
             System.out.println("Cart does not contain this item");
     }
 
-    public void applyMilkOffer(Cart cart) {
+    public boolean applyMilkOffer(Cart cart) {
         if (cart.milkOfferFlag) {
             System.out.println("You have already applied milk offer");
-            return;
+            return false;
         }
-
-        cart.milkOfferFlag = true;
-
         if (cart.getMilkCount() < 2) {
             System.out.println("To add milk offer please purchase more than 2 milk");
-            return;
+            return false;
         }
+        cart.milkOfferFlag = true;
         if (cart.getMilkCount()==2 || this.getMilkCount()==3) {
             items.put("Milk", items.get("Milk") +1 );
         }
         else {
             items.put("Milk", items.get("Milk") + milkCount/2);
         }
-        System.out.println("Milk offer applied");
+        return true;
     }
 }

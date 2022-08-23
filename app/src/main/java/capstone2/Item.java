@@ -4,6 +4,7 @@ public class Item {
     private String itemName;
     private double price;
 
+    // to create Item object we need to pass item name and price to constructor
     public Item(String itemName, double price) {
         this.itemName = itemName;
         this.price = price;
