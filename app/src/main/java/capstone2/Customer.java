@@ -44,6 +44,11 @@ public class Customer {
         this.cart.addToCart(item, quantity);
     }
 
+    // method for adding items to cart to call this method we neew to pass Item object and quantity of Item
+    public void removeFromCart(Item item, int quantity) {
+        this.cart.removeFromCart(item, quantity);
+    }
+
     // this method is used to provide discount to customer
     public void getDiscount() {
         // It will call Wallet class getDiscount(cartObject) method
